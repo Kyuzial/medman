@@ -1,6 +1,6 @@
 use std::path::Path;
 use walkdir::{DirEntry, WalkDir};
-use mp3_metadata::*;
+use audiotags::*;
 use ogg_metadata::*;
 
 use crate::musicfile::MusicFile;
@@ -20,11 +20,28 @@ pub fn scan(path: &Path) -> Vec<MusicFile> {
             Ok(x) => {
                 if is_supported(&x) {
                     match x.path().extension().unwrap().to_str().unwrap() {
-                        "mp3" => { match read_from_file(&x.path()) {
-                            Ok(a) => music_files.push(MusicFile::new(x.path(), a.optional_info)),
-                            Err(e)  => panic!("Error read files"),};
-                        }
-                        _ => println!("Not implemented")
+                        "mp3" => { 
+                            let tags = Tag::default().read_from_path(x.path()).unwrap();
+                            music_files.push(MusicFile::new(x.path(), 
+                            match tags.title() {
+                                Some(a) => String::from(a),
+                                None => String::new(),
+                            },
+                            match tags.artist() {
+                                Some(a) => String::from(a),
+                                None => String::new(),
+                            },
+                            match tags.album_title() {
+                                Some(a) => String::from(a),
+                                None => String::new(),
+                            },
+                            match tags.year() {
+                                Some(b) => b as u32,
+                                None => 0,
+                            },
+
+                            ))},
+                        "opus" => println!("Opus format not implemented"),
                     }
                 }
             },

@@ -8,5 +8,5 @@ edition = "2018"
 [dependencies]
 structopt = "0.3.23"
 walkdir = "2.3.2"
-mp3-metadata = "0.3.3"
+audiotags = "0.2.7182"
 ogg_metadata = "0.4.1"

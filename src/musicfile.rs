@@ -1,17 +1,23 @@
 use std::path::{Path, PathBuf};
-use mp3_metadata::*;
+use audiotags::*;
 
 #[derive(Debug)]
 pub struct MusicFile {
     path: PathBuf,
-    mp3_metadata : Vec<OptionalAudioTags>,
+    title: String,
+    artist: String,
+    album: String,
+    year: u32,
 }
 
 impl MusicFile {
-    pub fn new(path: &Path, mp3_metadata : Vec<OptionalAudioTags>) -> MusicFile {
+    pub fn new(path: &Path, title : String, artist: String, album: String, year: u32) -> MusicFile {
         MusicFile {
             path: path.to_path_buf(),
-            mp3_metadata,
+            title,
+            artist,
+            album,
+            year,
         }
     }
 }
