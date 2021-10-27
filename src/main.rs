@@ -7,6 +7,6 @@ fn main() {
 
     let music_files = scan(args.path());
     for music_file in music_files {
-        println!("{:?}", music_file);
+        println!("{:#?}", music_file);
     }
 }
