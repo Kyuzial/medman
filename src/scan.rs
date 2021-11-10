@@ -1,11 +1,10 @@
 use std::path::Path;
 use walkdir::{DirEntry, WalkDir};
 use audiotags::*;
-use ogg_metadata::*;
 
 use crate::musicfile::MusicFile;
 
-const SUPPORTED_EXTENSIONS: [&str; 2] = ["mp3", "opus"];
+const SUPPORTED_EXTENSIONS: [&str; 3] = ["mp3", "flac", "mp4"];
 
 fn is_supported(entry: &DirEntry) -> bool {
     entry.path().is_file() &&
@@ -20,7 +19,7 @@ pub fn scan(path: &Path) -> Vec<MusicFile> {
             Ok(x) => {
                 if is_supported(&x) {
                     match x.path().extension().unwrap().to_str().unwrap() {
-                        "mp3" => { 
+                        "mp3" | "flac" | "mp4" => { 
                             let tags = Tag::default().read_from_path(x.path()).unwrap();
                             music_files.push(MusicFile::new(x.path(), 
                             match tags.title() {
