@@ -1,5 +1,4 @@
 use std::path::{Path, PathBuf};
-use audiotags::*;
 use serde::{Serialize, Deserialize};
 
 #[derive(Debug, Serialize, Deserialize)]
