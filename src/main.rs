@@ -1,5 +1,6 @@
 use medman::cli::CliArguments;
 use medman::scan::scan;
+use medman::search::search;
 use std::io::{Write, Read};
 
 fn main() {
@@ -16,10 +17,16 @@ fn main() {
             }
         },
         "restore" => {
-            let mut file = std::fs::File::open(args.path()).unwrap();
+            let mut file = std::fs::File::open(args.path()).expect("File doesn't exist!");
             let mut contents = String::new();
             file.read_to_string(&mut contents).unwrap();
             print!("{}", contents);
+        },
+        "search" => {
+            
+        },
+        "write2md" => {
+
         },
         _ => {panic!("No args")},
     };

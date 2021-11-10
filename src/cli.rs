@@ -10,6 +10,9 @@ pub struct CliArguments {
     /// Chemin où trouver les fichiers à analyser
     #[structopt(parse(from_os_str))]
     path: std::path::PathBuf,
+
+    #[structopt(short="s", long="search", default_value = "")]
+    search: String,
 }
 
 impl CliArguments {
