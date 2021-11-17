@@ -170,10 +170,17 @@ dependencies = [
 ]
 
 [[package]]
+name = "markdown-gen"
+version = "1.2.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "8034621d7f1258317ca1dfb9205e3925d27ee4aa2a46620a09c567daf0310562"
+
+[[package]]
 name = "medman"
 version = "0.1.0"
 dependencies = [
  "audiotags",
+ "markdown-gen",
  "ogg_metadata",
  "serde",
  "serde_json",

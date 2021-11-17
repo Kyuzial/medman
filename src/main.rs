@@ -1,5 +1,6 @@
 use medman::cli::CliArguments;
 use medman::scan::scan;
+use medman::markdown::write2md;
 use medman::search::search;
 use std::io::{Write, Read};
 use medman::musicfile::MusicFile;

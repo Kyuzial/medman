@@ -20,4 +20,7 @@ impl MusicFile {
             year,
         }
     }
+    pub fn title(&self) -> &String {
+        &String::from(&self.title)
+    }
 }
