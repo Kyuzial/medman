@@ -20,7 +20,16 @@ impl MusicFile {
             year,
         }
     }
-    pub fn title(&self) -> &String {
-        &String::from(&self.title)
+    pub fn title(&self) -> &str {
+        &self.title.as_str()
+    }
+    pub fn artist(&self) -> &str {
+        &self.artist.as_str()
+    }
+    pub fn album(&self) -> &str {
+        &self.album.as_str()
+    }
+    pub fn year(&self) -> &u32 {
+        &self.year
     }
 }
