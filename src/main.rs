@@ -34,7 +34,7 @@ fn main() {
             
         },
         "write2md" => {
-
+            
         },
         _ => {panic!("No args")},
     };
