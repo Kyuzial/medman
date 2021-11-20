@@ -30,10 +30,11 @@ fn main() {
                 println!("{:#?}", music_file);
             }
         },
-        "search" => {
-            
-        },
         "write2md" => {
+            let music_files = scan(args.path());
+            write2md(music_files);
+        },
+        "search" => {
             
         },
         _ => {panic!("No args")},
