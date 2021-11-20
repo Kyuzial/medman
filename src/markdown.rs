@@ -9,7 +9,7 @@ pub fn write2md(musicfiles: Vec<MusicFile>) {
         md.write(music_file.title().heading(1)).unwrap();
         md.write(format!("Artist: {}", music_file.artist()).as_str()).unwrap();
         md.write(format!("Album: {}", music_file.album()).as_str()).unwrap();
-        md.write(format!("Year: {}", music_file.year().to_string().as_str()).as_str()).unwrap();
+        md.write(format!("Year: {}", music_file.year()).as_str()).unwrap();
     }
 }
 
