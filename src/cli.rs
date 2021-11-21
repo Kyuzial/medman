@@ -4,15 +4,16 @@ use structopt::StructOpt;
 #[derive(Debug)]
 #[derive(StructOpt)]
 pub struct CliArguments {
-    /// Commande à exécuter
+    /// S to scan a folder
+    /// R to read a json file
+    /// SS so search the 
     command: String,
 
     /// Chemin où trouver les fichiers à analyser
     #[structopt(parse(from_os_str))]
     path: std::path::PathBuf,
 
-    #[structopt(short="s", long="search", default_value = "")]
-    search: String,
+    search: Option<String>,
 }
 
 impl CliArguments {
@@ -26,5 +27,12 @@ impl CliArguments {
 
     pub fn command(&self) -> String {
         self.command.to_string()
+    }
+
+    pub fn search(&self) -> String {
+        match &self.search {
+            Some(a) => a.to_string(),
+            None => panic!("No pattern provided for search")
+        }
     }
 }

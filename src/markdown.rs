@@ -12,4 +12,3 @@ pub fn write2md(musicfiles: Vec<MusicFile>) {
         md.write(format!("Year: {}", music_file.year()).as_str()).unwrap();
     }
 }
-
