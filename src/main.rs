@@ -1,11 +1,18 @@
-use medman::{cli::CliArguments, search};
+//! # Medman
+//! Cet outil scan un repertoire et récupère les métadonnées des fichiers.
+//! Il sauvegarde la structure représentant le scan dans data.json
+//! S pour scan
+//! R pour lire le fichier data.json
+//! Avouter un s à la suite de S ou R pour chercher sur le scan ou le read.
+
+use medman::{cli::CliArguments};
 use medman::scan::scan;
 use medman::markdown::write2md;
 use medman::mkplaylist::mkplaylist;
 use medman::search::search;
-use core::panic;
 use std::io::{Write, Read};
 use medman::musicfile::MusicFile;
+use std::path::Path;
 
 
 fn main() {
@@ -53,7 +60,49 @@ fn main() {
             music_files = serde_json::from_str(&contents).expect("Can't deserialize the file");
             search(music_files, args.search())
         },
-        _ => {panic!("No args")},
-    };
+        _ => {
+            println!("What do you want to do ? You can either search, scan, or read a file");
+            let mut input = String::new();
+            std::io::stdin()
+                .read_line(&mut input)
+                .expect("Can't read input");
+            
+            if input.trim() == "scan" {
+                println!("Which folder do you want to scan ?");
+                input.clear();
+                std::io::stdin()
+                .read_line(&mut input)
+                .expect("Can't read path");
+                let input_str = input.trim();
+                let path = Path::new(&input_str);
+                let music_files = scan(path);
 
+                for music_file in &music_files {
+                    println!("{:#?}", music_file);
+                }
+
+                println!("Do you want to save result as markdwon, json or none ?");
+                input.clear();
+                std::io::stdin()
+                .read_line(&mut input)
+                .expect("Error reading command");
+
+                match input.trim() {
+                    "markdown" => write2md(music_files),
+                    "json" => {
+                        let mut file = std::fs::File::create("data.json").expect("create failed");
+                        let save = serde_json::to_string(&music_files).unwrap();
+                        file.write_all(save.as_bytes()).expect("Write failed");
+                    },
+                    _ => println!("Not saving anything"),
+                };
+            }
+            if input.trim() == "read" {
+
+            }
+            if input.trim() == "search"{
+
+            }
+        },
+    };
 }

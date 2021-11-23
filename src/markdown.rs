@@ -1,6 +1,7 @@
 use markdown_gen::markdown::*;
 use crate::musicfile::MusicFile;
 
+/// Représente les arguments en paramètres de ligne de commande
 pub fn write2md(musicfiles: Vec<MusicFile>) {
     let file = std::fs::File::create("musicfiles.md").unwrap();
     let mut md = Markdown::new(file);

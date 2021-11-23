@@ -6,11 +6,12 @@ use structopt::StructOpt;
 pub struct CliArguments {
     /// S to scan a folder
     /// R to read a json file
-    /// SS so search the 
+    /// SS so search the
+    #[structopt(default_value="")] 
     command: String,
 
     /// Chemin où trouver les fichiers à analyser
-    #[structopt(parse(from_os_str))]
+    #[structopt(parse(from_os_str), default_value="")]
     path: std::path::PathBuf,
 
     search: Option<String>,

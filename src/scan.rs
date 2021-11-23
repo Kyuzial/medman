@@ -11,6 +11,14 @@ fn is_supported(entry: &DirEntry) -> bool {
     SUPPORTED_EXTENSIONS.contains(&entry.path().extension().unwrap().to_str().unwrap())
 }
 
+/// Scan folder to get metadata
+/// # Example
+/// ```rust
+/// fn foo() {
+///     let music_files = scan(args.path());
+///     //The Vec music files contains all of the data
+/// }
+
 pub fn scan(path: &Path) -> Vec<MusicFile> {
     let mut music_files: Vec<MusicFile> = Vec::new();
     let walker = WalkDir::new(path).into_iter();
