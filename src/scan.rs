@@ -48,8 +48,7 @@ pub fn scan(path: &Path) -> Vec<MusicFile> {
                             },
 
                             ))},
-                        "opus" => println!("Opus format not implemented"),
-                        _ => println!("Only mp3 and opus supported at the moment")
+                        _ => println!("Only mp3, flac and mp4 supported at the moment")
                     }
                 }
             },

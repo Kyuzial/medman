@@ -1,10 +1,3 @@
-//! # Medman
-//! Cet outil scan un repertoire et récupère les métadonnées des fichiers.
-//! Il sauvegarde la structure représentant le scan dans data.json
-//! S pour scan
-//! R pour lire le fichier data.json
-//! Avouter un s à la suite de S ou R pour chercher sur le scan ou le read.
-
 use medman::{cli::CliArguments};
 use medman::scan::scan;
 use medman::markdown::write2md;
@@ -49,7 +42,7 @@ fn main() {
         },
         "Ss" => {
             let music_files = scan(args.path());
-            search(music_files, args.search())
+            search(music_files, args.search());
         },
         "Rs" => {
             let mut file = std::fs::File::open(args.path()).expect("Couldn't open file");
@@ -58,7 +51,7 @@ fn main() {
 
             let mut music_files: Vec<MusicFile> = Vec::new();
             music_files = serde_json::from_str(&contents).expect("Can't deserialize the file");
-            search(music_files, args.search())
+            search(music_files, args.search());
         },
         _ => {
             println!("What do you want to do ? You can either search, scan, or read a file");

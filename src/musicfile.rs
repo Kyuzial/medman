@@ -11,6 +11,16 @@ pub struct MusicFile {
     year: u32,
 }
 
+impl PartialEq for MusicFile {
+    fn eq(&self, other: &Self) -> bool {
+        self.artist == other.artist &&
+        self.album == other.album &&
+        self.title == other.title &&
+        self.year == other.year
+    }
+}
+impl Eq for MusicFile {}
+
 impl MusicFile {
     pub fn new(path: &Path, title : String, artist: String, album: String, year: u32) -> MusicFile {
         MusicFile {
@@ -20,6 +30,17 @@ impl MusicFile {
             artist,
             album,
             year,
+        }
+    }
+
+    pub fn copy(&self) -> MusicFile {
+        MusicFile {
+            path: self.path.clone(),
+            pathstr: self.pathstr.clone(),
+            title: self.title.clone(),
+            artist: self.artist.clone(),
+            album: self.album.clone(),
+            year: self.year.clone(),
         }
     }
 
