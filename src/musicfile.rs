@@ -40,7 +40,7 @@ impl MusicFile {
             title: self.title.clone(),
             artist: self.artist.clone(),
             album: self.album.clone(),
-            year: self.year.clone(),
+            year: self.year,
         }
     }
 
@@ -48,13 +48,13 @@ impl MusicFile {
         &self.pathstr
     }
     pub fn title(&self) -> &str {
-        &self.title.as_str()
+        self.title.as_str()
     }
     pub fn artist(&self) -> &str {
-        &self.artist.as_str()
+        self.artist.as_str()
     }
     pub fn album(&self) -> &str {
-        &self.album.as_str()
+        self.album.as_str()
     }
     pub fn year(&self) -> &u32 {
         &self.year

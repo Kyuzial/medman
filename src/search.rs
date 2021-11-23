@@ -11,47 +11,39 @@ pub fn search(musicfiles: Vec<MusicFile>, pattern: String) -> Vec<MusicFile> {
             let search: Vec<&str> = v[i].split('=').collect();
             match search[0].to_lowercase().as_str() {
                 "artist" => {
-                    if music.artist().to_lowercase().as_str().contains(search[1].to_lowercase().as_str()) {
-                        if !entry_is_in_tab(&result_search, &music.copy()) {
-                            result_search.push(music.copy());
-                        }
+                    if music.artist().to_lowercase().as_str().contains(search[1].to_lowercase().as_str()) && !entry_is_in_tab(&result_search, &music.copy()) {
+                        result_search.push(music.copy());
                     }
                 },
                 "album" => {
-                    if music.album().to_lowercase().as_str().contains(search[1].to_lowercase().as_str()) {
-                        if !entry_is_in_tab(&result_search, &music.copy()) {
-                            result_search.push(music.copy());
-                        }
+                    if music.album().to_lowercase().as_str().contains(search[1].to_lowercase().as_str()) && !entry_is_in_tab(&result_search, &music.copy()) {
+                        result_search.push(music.copy());
                     }
                 },
                 "title" => {
-                    if music.title().to_lowercase().as_str().contains(search[1].to_lowercase().as_str()) {
-                        if !entry_is_in_tab(&result_search, &music.copy()) {
-                            result_search.push(music.copy());
-                        }
+                    if music.title().to_lowercase().as_str().contains(search[1].to_lowercase().as_str()) && !entry_is_in_tab(&result_search, &music.copy()) {
+                        result_search.push(music.copy());
                     }
                 },
                 "year" => {
-                    if music.year() == &search[1].parse::<u32>().unwrap() {
-                        if !entry_is_in_tab(&result_search, &music.copy()) {
-                            result_search.push(music.copy());
-                        }
+                    if music.year() == &search[1].parse::<u32>().unwrap() && !entry_is_in_tab(&result_search, &music.copy()) {
+                        result_search.push(music.copy());
                     }
                 },
                 _ => panic!("Only search artist, title, album, or year")
             }
         }
-        i = i +1;
+        i += 1;
     }
     println!("{:#?}", result_search);
     result_search
 }
 
-pub fn entry_is_in_tab (tab: &Vec<MusicFile>, musicfile: &MusicFile) -> bool{
+pub fn entry_is_in_tab (tab: &[MusicFile], musicfile: &MusicFile) -> bool{
     for music in tab {
         if music == musicfile {
             return true;
         }
     }
-    return false;
+    false
 }
