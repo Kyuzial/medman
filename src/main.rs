@@ -53,94 +53,111 @@ fn main() {
             music_files = serde_json::from_str(&contents).expect("Can't deserialize the file");
             search(music_files, args.search());
         },
-        _ => {
-            println!("What do you want to do ? You can either search, scan, or read a file");
-            let mut input = String::new();
-            std::io::stdin()
-                .read_line(&mut input)
-                .expect("Can't read input");
-            
-            if input.trim() == "scan" {
-                println!("Which folder do you want to scan ?");
-                input.clear();
-                std::io::stdin()
-                .read_line(&mut input)
-                .expect("Can't read path");
-                let input_str = input.trim();
-                let path = Path::new(&input_str);
-                let music_files = scan(path);
+        _ => interractive(),
+    };
+}
 
-                for music_file in &music_files {
-                    println!("{:#?}", music_file);
-                }
+fn interractive () {
+    println!("What do you want to do ? You can either search, scan, or read a file");
+    let mut input = String::new();
+    std::io::stdin()
+        .read_line(&mut input)
+        .expect("Can't read input");
+    
+    if input.trim() == "scan" {
+        println!("Which folder do you want to scan ?");
+        input.clear();
+        std::io::stdin()
+        .read_line(&mut input)
+        .expect("Can't read path");
+        let input_str = input.trim();
+        let path = Path::new(&input_str);
+        let music_files = scan(path);
 
-                println!("Do you want to save result as markdwon, json or none ?");
-                input.clear();
-                std::io::stdin()
-                .read_line(&mut input)
-                .expect("Error reading command");
+        for music_file in &music_files {
+            println!("{:#?}", music_file);
+        }
 
-                match input.trim() {
-                    "markdown" => write2md(music_files),
-                    "json" => {
-                        let mut file = std::fs::File::create("data.json").expect("create failed");
-                        let save = serde_json::to_string(&music_files).unwrap();
-                        file.write_all(save.as_bytes()).expect("Write failed");
-                    },
-                    _ => println!("Not saving anything"),
-                };
-            }
-            if input.trim() == "read" {
-                println!("Which file do you want to read ?");
-                input.clear();
-                std::io::stdin()
-                .read_line(&mut input)
-                .expect("Can't read path");
-                let input_str = input.trim();
-                
-                let mut file = std::fs::File::open(input_str).expect("Couldn't open file");
+        println!("Do you want to save result as markdwon, json or none ?");
+        input.clear();
+        std::io::stdin()
+        .read_line(&mut input)
+        .expect("Error reading command");
+
+        match input.trim() {
+            "markdown" => write2md(music_files),
+            "json" => {
+                let mut file = std::fs::File::create("data.json").expect("create failed");
+                let save = serde_json::to_string(&music_files).unwrap();
+                file.write_all(save.as_bytes()).expect("Write failed");
+            },
+            _ => println!("Not saving anything"),
+        };
+    }
+    if input.trim() == "read" {
+        println!("Which file do you want to read ?");
+        input.clear();
+        std::io::stdin()
+        .read_line(&mut input)
+        .expect("Can't read path");
+        let input_str = input.trim();
+        
+        let mut file = std::fs::File::open(input_str).expect("Couldn't open file");
+        let mut contents = String::new();
+        file.read_to_string(&mut contents).unwrap();
+
+        let mut music_files: Vec<MusicFile> = Vec::new();
+        music_files = serde_json::from_str(&contents).expect("Can't deserialize the file");
+        for music_file in music_files {
+            println!("{:#?}", music_file);
+        }
+    }
+    if input.trim() == "search"{
+        println!("Do you want to read a json file or scan and search a folder ? (scan or read)");
+        input.clear();
+        std::io::stdin()
+        .read_line(&mut input)
+        .expect("Couldn't read your input");
+        let input_str = input.trim();
+
+        match input_str {
+            "read" => {
+                let mut file = std::fs::File::open("data.json").expect("Couldn't open file");
                 let mut contents = String::new();
                 file.read_to_string(&mut contents).unwrap();
 
                 let mut music_files: Vec<MusicFile> = Vec::new();
                 music_files = serde_json::from_str(&contents).expect("Can't deserialize the file");
-                for music_file in music_files {
-                   println!("{:#?}", music_file);
-                }
-            }
-            if input.trim() == "search"{
-                println!("Do you want to read a json file or scan and search a folder ? (scan or read)");
+
+                println!("Enter the pattern (Ex : artist=Bonjour+Year=1985)");
+                input.clear();
+                std::io::stdin()
+                .read_line(&mut input)
+                .expect("Couldn't read your input");
+                let input_str = input.trim().to_string();
+
+                search(music_files, input_str);
+            },
+            "scan" => {
+                println!("Which Folder ?");
                 input.clear();
                 std::io::stdin()
                 .read_line(&mut input)
                 .expect("Couldn't read your input");
                 let input_str = input.trim();
+                let music_files = scan(Path::new(input_str));
 
-                match input_str {
-                    "read" => {
-                        let mut file = std::fs::File::open("data.json").expect("Couldn't open file");
-                        let mut contents = String::new();
-                        file.read_to_string(&mut contents).unwrap();
+                println!("Enter the pattern (Ex : artist=Bonjour+Year=1985)");
+                input.clear();
+                std::io::stdin()
+                .read_line(&mut input)
+                .expect("Couldn't read your input");
+                let input_str = input.trim().to_string();
 
-                        let mut music_files: Vec<MusicFile> = Vec::new();
-                        music_files = serde_json::from_str(&contents).expect("Can't deserialize the file");
-                        search(music_files, args.search());
-                    },
-                    "scan" => {
-                        println!("Which Folder ?");
-                        input.clear();
-                        std::io::stdin()
-                        .read_line(&mut input)
-                        .expect("Couldn't read your input");
-                        let input_str = input.trim();
-                        let music_files = scan(Path::new(input_str));
-                        search(music_files, args.search());
-                    }
-                    _ => panic!("Enter read or scan!")
-                }
+                search(music_files, input_str);
             }
-        },
-    };
+            _ => panic!("Enter read or scan!")
+        }
+    }
 }
-
 
