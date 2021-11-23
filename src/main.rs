@@ -109,9 +109,38 @@ fn main() {
                 }
             }
             if input.trim() == "search"{
+                println!("Do you want to read a json file or scan and search a folder ? (scan or read)");
+                input.clear();
+                std::io::stdin()
+                .read_line(&mut input)
+                .expect("Couldn't read your input");
+                let input_str = input.trim();
 
+                match input_str {
+                    "read" => {
+                        let mut file = std::fs::File::open("data.json").expect("Couldn't open file");
+                        let mut contents = String::new();
+                        file.read_to_string(&mut contents).unwrap();
+
+                        let mut music_files: Vec<MusicFile> = Vec::new();
+                        music_files = serde_json::from_str(&contents).expect("Can't deserialize the file");
+                        search(music_files, args.search());
+                    },
+                    "scan" => {
+                        println!("Which Folder ?");
+                        input.clear();
+                        std::io::stdin()
+                        .read_line(&mut input)
+                        .expect("Couldn't read your input");
+                        let input_str = input.trim();
+                        let music_files = scan(Path::new(input_str));
+                        search(music_files, args.search());
+                    }
+                    _ => panic!("Enter read or scan!")
+                }
             }
         },
     };
 }
+
 
