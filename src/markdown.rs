@@ -2,6 +2,12 @@ use markdown_gen::markdown::*;
 use crate::musicfile::MusicFile;
 
 /// Représente les arguments en paramètres de ligne de commande
+/// /// /// # Example
+/// ```rust
+/// fn foo() {
+///     write2md(musicfile);
+///     //The Vec music files contains all of the data
+/// }
 pub fn write2md(musicfiles: Vec<MusicFile>) {
     let file = std::fs::File::create("musicfiles.md").unwrap();
     let mut md = Markdown::new(file);

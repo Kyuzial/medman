@@ -2,7 +2,13 @@ use pls::*;
 use crate::musicfile::MusicFile;
 use std::io::Write;
 
-///Génère une playlist VLC à partir d'une liste
+///Génère une playlist VLC à partir d'une liste (playlist.pls)
+/// /// # Example
+/// ```rust
+/// fn foo() {
+///     mkplaylist(musicfile);
+///     //The Vec music files contains all of the data
+/// }
 pub fn mkplaylist(musicfiles: Vec<MusicFile>) {
     
     let mut buf = Vec::new();
