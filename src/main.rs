@@ -41,8 +41,9 @@ fn main() {
             mkplaylist(music_files);
         },
         "Ss" => {
-            let music_files = scan(args.path());
-            search(music_files, args.search());
+            let mut music_files = scan(args.path());
+            music_files = search(music_files, args.search());
+            write2md(music_files);
         },
         "Rs" => {
             let mut file = std::fs::File::open(args.path()).expect("Couldn't open file");
@@ -51,7 +52,8 @@ fn main() {
 
             let mut music_files: Vec<MusicFile> = Vec::new();
             music_files = serde_json::from_str(&contents).expect("Can't deserialize the file");
-            search(music_files, args.search());
+            music_files = search(music_files, args.search());
+            write2md(music_files);
         },
         _ => interractive(),
     };
@@ -136,7 +138,8 @@ fn interractive () {
                 .expect("Couldn't read your input");
                 let input_str = input.trim().to_string();
 
-                search(music_files, input_str);
+                music_files = search(music_files, input_str);
+                write2md(music_files);
             },
             "scan" => {
                 println!("Which Folder ?");
@@ -145,7 +148,7 @@ fn interractive () {
                 .read_line(&mut input)
                 .expect("Couldn't read your input");
                 let input_str = input.trim();
-                let music_files = scan(Path::new(input_str));
+                let mut music_files = scan(Path::new(input_str));
 
                 println!("Enter the pattern (Ex : artist=Bonjour+Year=1985)");
                 input.clear();
@@ -154,10 +157,50 @@ fn interractive () {
                 .expect("Couldn't read your input");
                 let input_str = input.trim().to_string();
 
-                search(music_files, input_str);
+                music_files = search(music_files, input_str);
+                write2md(music_files);
             }
             _ => panic!("Enter read or scan!")
         }
     }
 }
 
+
+#[cfg(test)]
+mod tests {
+    use medman::scan;
+
+    use super::*;
+
+    #[test]
+    fn scan_non_existing_path(){
+        let musicfiles_empty:Vec<MusicFile> = Vec::new();
+        let mut musicfiles:Vec<MusicFile> = Vec::new();
+        musicfiles = scan(Path::new("/fafa/fa"));
+        assert_eq!(musicfiles_empty, musicfiles);        
+    }
+
+    #[test]
+    fn search_with_empty_data(){
+        let musicfiles_empty:Vec<MusicFile> = Vec::new();
+        let mut musicfiles:Vec<MusicFile> = Vec::new();
+        musicfiles = search(musicfiles, "Artist=X".to_string());
+
+        assert_eq!(musicfiles_empty, musicfiles);        
+    }
+
+    #[test]
+    fn search_with_empty_pattern(){
+        let mut musicfiles:Vec<MusicFile> = Vec::new();
+        let musicfiles_empty:Vec<MusicFile> = Vec::new();
+        musicfiles.push(MusicFile::new(Path::new("/home/music/test.mp3"), "X".to_string(), "Y".to_string(), "Z".to_string(), 1900));
+        assert_eq!(musicfiles_empty, search(musicfiles, "".to_string()));    
+    }
+    #[test]
+    fn search_with_bad_pattern(){
+        let musicfiles_empty:Vec<MusicFile> = Vec::new();
+        let mut musicfiles_result:Vec<MusicFile> = Vec::new();
+        musicfiles_result = search(musicfiles_result, "FAFAFA=X".to_string());
+        assert_eq!(musicfiles_empty, musicfiles_result);        
+    }
+}

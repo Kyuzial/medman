@@ -3,7 +3,7 @@ use crate::musicfile::MusicFile;
 
 /// Représente les arguments en paramètres de ligne de commande
 /// /// /// # Example
-/// ```rust
+/// ```ignore
 /// fn foo() {
 ///     write2md(musicfile);
 ///     //The Vec music files contains all of the data

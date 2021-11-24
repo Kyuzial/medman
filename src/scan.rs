@@ -13,7 +13,7 @@ fn is_supported(entry: &DirEntry) -> bool {
 
 /// Scan folder to get metadata
 /// # Example
-/// ```rust
+/// ```ignore
 /// fn foo() {
 ///     let music_files = scan(args.path());
 ///     //The Vec music files contains all of the data

@@ -4,7 +4,7 @@ use std::io::Write;
 
 ///Génère une playlist VLC à partir d'une liste (playlist.pls)
 /// /// # Example
-/// ```rust
+/// ```ignore
 /// fn foo() {
 ///     mkplaylist(musicfile);
 ///     //The Vec music files contains all of the data

@@ -30,7 +30,7 @@ pub fn search(musicfiles: Vec<MusicFile>, pattern: String) -> Vec<MusicFile> {
                         result_search.push(music.copy());
                     }
                 },
-                _ => panic!("Only search artist, title, album, or year")
+                _ => println!("Only search artist, title, album, or year")
             }
         }
         i += 1;
